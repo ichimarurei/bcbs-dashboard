@@ -30,24 +30,24 @@ const LoginPage = () => {
                 >
                     <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
                         <div className="text-center mb-5">
-                            <img src="/layout/images/bcbs.jpg" alt="Image" height="50" className="mb-3" />
-                            <div className="text-900 text-3xl font-medium mb-3">BCBS | Dashboard</div>
-                            <span className="text-600 font-medium">Sign in to continue</span>
+                            <img src="/layout/images/bcbs.jpg" alt="Image" height="200" className="mb-3 border-round-2xl" />
+                            <div className="text-900 text-3xl font-medium mb-3">Baitul Mal Cicurug Bata</div>
+                            <span className="text-600 font-medium">Admin Dashboard Panel System</span>
                         </div>
 
                         <div>
                             <label htmlFor="phone" className="block text-900 text-xl font-medium mb-2">
-                                Phone
+                                Telepon
                             </label>
-                            <InputText id="phone" type="tel" placeholder="Phone Number" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} value={phone} onChange={(e) => setPhone(e.target.value)} />
+                            <InputText id="phone" type="tel" placeholder="Nomor Telepon" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} value={phone} onChange={(e) => setPhone(e.target.value)} />
 
                             <label htmlFor="password" className="block text-900 font-medium text-xl mb-2">
-                                Password
+                                Sandi
                             </label>
-                            <Password inputId="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" toggleMask className="w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Password>
+                            <Password inputId="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Kata Sandi" toggleMask className="w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Password>
 
                             <div className="flex align-items-center justify-content-between mb-5 gap-5"></div>
-                            <Button label="Sign In" className="w-full p-3 text-xl" onClick={() => router.push('/')}></Button>
+                            <Button label="Akses" className="w-full p-3 text-xl" onClick={() => router.push('/')}></Button>
                         </div>
                     </div>
                 </div>
