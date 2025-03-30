@@ -1,15 +1,16 @@
 'use client';
-import React, { useState, createContext } from 'react';
-import { LayoutState, ChildContainerProps, LayoutConfig, LayoutContextProps } from '@/types';
+
+import { ChildContainerProps, LayoutConfig, LayoutContextProps, LayoutState } from '@/types';
+import { createContext, useState } from 'react';
 export const LayoutContext = createContext({} as LayoutContextProps);
 
 export const LayoutProvider = ({ children }: ChildContainerProps) => {
     const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>({
-        ripple: false,
+        ripple: true,
         inputStyle: 'outlined',
         menuMode: 'static',
-        colorScheme: 'light',
-        theme: 'lara-light-indigo',
+        colorScheme: 'dark',
+        theme: 'lara-dark-purple',
         scale: 14
     });
 

@@ -6,16 +6,16 @@ interface AppLayoutProps {
 }
 
 export const metadata: Metadata = {
-    title: 'PrimeReact Sakai',
-    description: 'The ultimate collection of design-agnostic, flexible and accessible React UI Components.',
+    title: 'Baitul Mal Cicurug Bata',
+    description: 'Baitul Mal Cicurug Bata Tasikmalaya.',
     robots: { index: false, follow: false },
     viewport: { initialScale: 1, width: 'device-width' },
     openGraph: {
         type: 'website',
-        title: 'PrimeReact SAKAI-REACT',
-        url: 'https://sakai.primereact.org/',
-        description: 'The ultimate collection of design-agnostic, flexible and accessible React UI Components.',
-        images: ['https://www.primefaces.org/static/social/sakai-react.png'],
+        title: 'Baitul Mal Cicurug Bata',
+        url: 'https://bcbs-dashboard-v2.vercel.app/',
+        description: 'Baitul Mal Cicurug Bata Tasikmalaya.',
+        images: [],
         ttl: 604800
     },
     icons: {

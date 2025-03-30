@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 
-import React, { useContext } from 'react';
+import { AppMenuItem } from '@/types';
+import Link from 'next/link';
+import { useContext } from 'react';
 import AppMenuitem from './AppMenuitem';
 import { LayoutContext } from './context/layoutcontext';
 import { MenuProvider } from './context/menucontext';
-import Link from 'next/link';
-import { AppMenuItem } from '@/types';
 
 const AppMenu = () => {
     const { layoutConfig } = useContext(LayoutContext);
@@ -154,18 +154,6 @@ const AppMenu = () => {
                     label: 'Documentation',
                     icon: 'pi pi-fw pi-question',
                     to: '/documentation'
-                },
-                {
-                    label: 'Figma',
-                    url: 'https://www.dropbox.com/scl/fi/bhfwymnk8wu0g5530ceas/sakai-2023.fig?rlkey=u0c8n6xgn44db9t4zkd1brr3l&dl=0',
-                    icon: 'pi pi-fw pi-pencil',
-                    target: '_blank'
-                },
-                {
-                    label: 'View Source',
-                    icon: 'pi pi-fw pi-search',
-                    url: 'https://github.com/primefaces/sakai-react',
-                    target: '_blank'
                 }
             ]
         }
