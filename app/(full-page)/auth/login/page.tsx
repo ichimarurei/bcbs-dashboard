@@ -30,9 +30,9 @@ const LoginPage = () => {
                 >
                     <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
                         <div className="text-center mb-5">
-                            <img src="/layout/images/bcbs.jpg" alt="Image" height="200" className="mb-3 border-round-2xl" />
-                            <div className="text-900 text-3xl font-medium mb-3">Baitul Mal Cicurug Bata</div>
-                            <span className="text-600 font-medium">Admin Dashboard Panel System</span>
+                            <img src="/layout/images/bcbs.jpg" alt="Image" height="170" className="mb-3 border-round-2xl" />
+                            <div className="text-900 text-3xl font-medium mb-3">Baitul Mal</div>
+                            <span className="text-600 font-medium">Cicurug Bata | Dashboard</span>
                         </div>
 
                         <div>
