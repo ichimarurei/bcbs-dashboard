@@ -2,6 +2,7 @@
 'use client';
 
 import { AppTopbarRef, ChildContainerProps, LayoutState } from '@/types';
+import { Analytics } from '@vercel/analytics/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEventListener, useUnmountEffect } from 'primereact/hooks';
 import { classNames } from 'primereact/utils';
@@ -138,6 +139,7 @@ const Layout = ({ children }: ChildContainerProps) => {
                 </div>
                 <div className="layout-mask"></div>
             </div>
+            <Analytics />
         </React.Fragment>
     );
 };
