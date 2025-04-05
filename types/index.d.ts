@@ -1,62 +1,68 @@
-import React, { ReactNode } from 'react';
+import mongoose from 'mongoose';
+import { ReactNode } from 'react';
+import { AppMailProps, AppMailReplyProps, AppMailSidebarItem, ChartDataState, ChartOptionsState, CustomEvent, Demo, LayoutType, SortOrderType } from './demo';
 import {
-    Page,
     AppBreadcrumbProps,
+    AppConfigProps,
+    AppMenuItem,
+    AppMenuItemProps,
+    AppTopbarRef,
     Breadcrumb,
     BreadcrumbItem,
-    MenuProps,
-    MenuModel,
-    AppSubMenuProps,
+    ChatContextProps,
     LayoutConfig,
-    LayoutState,
-    AppBreadcrumbState,
-    Breadcrumb,
     LayoutContextProps,
+    LayoutState,
     MailContextProps,
     MenuContextProps,
-    ChatContextProps,
-    TaskContextProps,
-    AppConfigProps,
+    MenuModel,
+    MenuProps,
     NodeRef,
-    AppTopbarRef,
-    MenuModelItem,
-    AppMenuItemProps,
-    AppMenuItem
+    Page,
+    TaskContextProps
 } from './layout';
-import { Demo, LayoutType, SortOrderType, CustomEvent, ChartDataState, ChartOptionsState, AppMailSidebarItem, AppMailReplyProps, AppMailProps } from './demo';
 
 type ChildContainerProps = {
     children: ReactNode;
 };
 
 export type {
-    Page,
     AppBreadcrumbProps,
+    AppConfigProps,
+    AppMailProps,
+    AppMailReplyProps,
+    AppMailSidebarItem,
+    AppMenuItem,
+    AppMenuItemProps,
+    AppTopbarRef,
+    Breadcrumb,
     Breadcrumb,
     BreadcrumbItem,
-    MenuProps,
-    MenuModel,
-    LayoutConfig,
-    LayoutState,
-    Breadcrumb,
-    LayoutContextProps,
-    MailContextProps,
-    MenuContextProps,
-    ChatContextProps,
-    TaskContextProps,
-    AppConfigProps,
-    NodeRef,
-    AppTopbarRef,
-    AppMenuItemProps,
-    ChildContainerProps,
-    Demo,
-    LayoutType,
-    SortOrderType,
-    CustomEvent,
     ChartDataState,
     ChartOptionsState,
-    AppMailSidebarItem,
-    AppMailReplyProps,
-    AppMailProps,
-    AppMenuItem
+    ChatContextProps,
+    ChildContainerProps,
+    CustomEvent,
+    Demo,
+    LayoutConfig,
+    LayoutContextProps,
+    LayoutState,
+    LayoutType,
+    MailContextProps,
+    MenuContextProps,
+    MenuModel,
+    MenuProps,
+    NodeRef,
+    Page,
+    SortOrderType,
+    TaskContextProps
 };
+
+export interface MongooseCache {
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
+}
+
+export interface IErrorResponse {
+    error: string;
+}

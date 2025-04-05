@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-
 import { AppTopbarRef } from '@/types';
 import Link from 'next/link';
 import { classNames } from 'primereact/utils';
@@ -18,6 +17,11 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
         topbarmenubutton: topbarmenubuttonRef.current
     }));
 
+    const signOut = () => {
+        sessionStorage.clear();
+        window.location.href = '/auth';
+    };
+
     return (
         <div className="layout-topbar">
             <Link href="/" className="layout-topbar-logo">
@@ -34,7 +38,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
             </button>
 
             <div ref={topbarmenuRef} className={classNames('layout-topbar-menu', { 'layout-topbar-menu-mobile-active': layoutState.profileSidebarVisible })}>
-                <Link href="/auth/login">
+                <Link href="#" onClick={signOut}>
                     <button type="button" className="p-link layout-topbar-button">
                         <i className="pi pi-sign-out"></i>
                         <span>Sign Out</span>

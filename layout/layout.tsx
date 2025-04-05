@@ -2,7 +2,7 @@
 'use client';
 
 import { AppTopbarRef, ChildContainerProps, LayoutState } from '@/types';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEventListener, useUnmountEffect } from 'primereact/hooks';
 import { classNames } from 'primereact/utils';
 import React, { useContext, useEffect, useRef } from 'react';
@@ -30,9 +30,16 @@ const Layout = ({ children }: ChildContainerProps) => {
             }
         }
     });
-
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!sessionStorage.getItem('bcbs-session')) {
+            router.push('/auth');
+        }
+    }, [router]);
+
     useEffect(() => {
         hideMenu();
         hideProfileMenu();
