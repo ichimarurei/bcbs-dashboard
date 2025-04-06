@@ -10,7 +10,7 @@ const AccessDeniedPage = () => {
     return (
         <div className="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
             <div className="flex flex-column align-items-center justify-content-center">
-                <img src="/layout/images/bcbs.jpg" alt="BCBS logo" className="mb-5 w-6rem flex-shrink-0 border-round-md" />
+                <img src="/images/layout/bcbs.jpg" alt="BCBS logo" className="mb-5 w-6rem flex-shrink-0 border-round-md" />
                 <div
                     style={{
                         borderRadius: '56px',
@@ -24,7 +24,7 @@ const AccessDeniedPage = () => {
                         </div>
                         <h1 className="text-900 font-bold text-5xl mb-2">Akses Ditolak</h1>
                         <div className="text-600 mb-5">Anda tidak memiliki akses ke sistem kami!</div>
-                        <img src="/demo/images/access/asset-access.svg" alt="Error" className="mb-5" width="80%" />
+                        <img src="/images/access/asset-access.svg" alt="Error" className="mb-5" width="80%" />
                         <Button icon="pi pi-arrow-left" label="Masuk dashboard" text onClick={() => router.push('/auth')} />
                     </div>
                 </div>

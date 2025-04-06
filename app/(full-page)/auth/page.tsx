@@ -16,6 +16,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
+    const [isLoad, setLoad] = useState(false);
     const { layoutConfig } = useContext(LayoutContext);
 
     const router = useRouter();
@@ -81,6 +82,8 @@ const LoginPage = () => {
                 });
             }
         } catch (_) {}
+
+        setLoad(false);
     };
 
     useEffect(() => {
@@ -92,7 +95,7 @@ const LoginPage = () => {
     return (
         <div className={containerClassName}>
             <div className="flex flex-column align-items-center justify-content-center">
-                <img src={`/layout/images/logo-${layoutConfig.colorScheme === 'light' ? 'dark' : 'white'}.svg`} alt="Logo" className="mb-5 w-6rem flex-shrink-0" />
+                <img src={`/images/layout/logo-${layoutConfig.colorScheme === 'light' ? 'dark' : 'white'}.svg`} alt="Logo" className="mb-5 w-6rem flex-shrink-0" />
                 <div
                     style={{
                         borderRadius: '56px',
@@ -104,7 +107,7 @@ const LoginPage = () => {
                         <Toast ref={toast} />
 
                         <div className="text-center mb-5">
-                            <img src="/layout/images/bcbs.jpg" alt="Image" height="170" className="mb-3 border-round-2xl" />
+                            <img src="/images/layout/bcbs.jpg" alt="Image" height="170" className="mb-3 border-round-2xl" />
                             <div className="text-900 text-3xl font-medium mb-3">Dashboard BCBS</div>
                             <span className="text-600 font-medium">Baitul Mal | Cicurug Bata</span>
                         </div>
@@ -121,7 +124,17 @@ const LoginPage = () => {
                             <Password inputId="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Kata Sandi" toggleMask className="w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Password>
 
                             <div className="flex align-items-center justify-content-between mb-5 gap-5"></div>
-                            <Button label="Akses" className="w-full p-3 text-xl" onClick={async () => await doSign()}></Button>
+                            {!isLoad && (
+                                <Button
+                                    label="Akses"
+                                    className="w-full p-3 text-xl"
+                                    onClick={async () => {
+                                        setLoad(true);
+                                        await doSign();
+                                    }}
+                                />
+                            )}
+                            {isLoad && <Button label="Proses..." className="w-full p-3 text-xl" onClick={() => {}} />}
                         </div>
                     </div>
                 </div>
