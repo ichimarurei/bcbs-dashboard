@@ -2,8 +2,6 @@
 'use client';
 
 import { LayoutContext } from '@/layout/context/layoutcontext';
-import { secretCrypto } from '@/lib/constant';
-import { AES, enc } from 'crypto-js';
 import { isEmpty } from 'lodash';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
@@ -50,28 +48,11 @@ const LoginPage = () => {
                         detail: result?.error
                     });
                 } else {
-                    let incorrect = true;
-
-                    if (result?.password) {
-                        if (AES.decrypt(result.password, secretCrypto).toString(enc.Utf8) === password) {
-                            delete result?.password;
-                            delete result?.id;
-                            delete result?._id;
-                            sessionStorage.setItem('bcbs-session', JSON.stringify(result));
-                            incorrect = false;
-                        }
-                    }
-
-                    if (!incorrect) {
-                        router.push('/dashboard');
-                    } else {
-                        toast.current?.show({
-                            life: 3000,
-                            severity: 'warn',
-                            summary: 'Akses ditolak!',
-                            detail: 'Kata sandi tidak sesuai!'
-                        });
-                    }
+                    delete result?.password;
+                    delete result?.id;
+                    delete result?._id;
+                    sessionStorage.setItem('bcbs-session', JSON.stringify(result));
+                    router.push('/dashboard');
                 }
             } else {
                 toast.current?.show({

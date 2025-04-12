@@ -1,18 +1,20 @@
+import { secretCrypto } from '@/lib/constant';
 import connectDB from '@/lib/mongo';
-import admin from '@/models/admin';
+import admin, { IAdmin } from '@/models/admin';
+import { AES, enc } from 'crypto-js';
 import { NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
     let response: Response = Response.json({ error: 'Unprocessable operation!' }, { status: 422 });
     let signed = false;
-    await connectDB();
 
     try {
+        await connectDB();
         const { phone, password } = await req.json();
-        const exist = await admin.findOne({ phone }).lean();
+        const exist = await admin.findOne({ phone }).lean<IAdmin>();
 
         if (exist) {
-            signed = true;
+            signed = AES.decrypt(exist.password, secretCrypto).toString(enc.Utf8) === password;
         }
 
         response = Response.json(signed ? exist : { error: 'Akun tidak ditemukan' }, { status: signed ? 200 : 404 });
