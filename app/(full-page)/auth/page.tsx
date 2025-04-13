@@ -115,7 +115,20 @@ const LoginPage = () => {
                                     }}
                                 />
                             )}
-                            {isLoad && <Button label="Proses..." className="w-full p-3 text-xl" onClick={() => {}} />}
+                            {isLoad && (
+                                <Button
+                                    label="Proses..."
+                                    className="w-full p-3 text-xl"
+                                    onClick={() => {
+                                        toast.current?.show({
+                                            life: 3000,
+                                            severity: 'info',
+                                            summary: 'Info',
+                                            detail: 'Masih memproses otentikasi hak akses Anda...'
+                                        });
+                                    }}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>

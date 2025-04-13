@@ -41,7 +41,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
                 <Link href="#" onClick={signOut}>
                     <button type="button" className="p-link layout-topbar-button">
                         <i className="pi pi-sign-out"></i>
-                        <span>Sign Out</span>
+                        <span>Keluar</span>
                     </button>
                 </Link>
             </div>
