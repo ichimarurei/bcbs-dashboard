@@ -5,7 +5,7 @@ import 'primeicons/primeicons.css';
 import { PrimeReactProvider } from 'primereact/api';
 import 'primereact/resources/primereact.css';
 import { LayoutProvider } from '../layout/context/layoutcontext';
-import '../styles/demo/Demos.scss';
+import '../styles/_custom.scss';
 import '../styles/layout/layout.scss';
 
 interface RootLayoutProps {

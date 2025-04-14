@@ -21,7 +21,7 @@ const AppMenu = () => {
         {
             label: 'Pengaturan',
             items: [
-                { label: 'Pengurus', icon: 'pi pi-fw pi-user', to: '/', badge: 'NEW' },
+                { label: 'Pengurus', icon: 'pi pi-fw pi-user', to: '/admin', badge: 'NEW' },
                 { label: 'Anggota', icon: 'pi pi-fw pi-users', to: '/' },
                 { label: 'Transparansi', icon: 'pi pi-fw pi-bookmark', to: '/' }
             ]

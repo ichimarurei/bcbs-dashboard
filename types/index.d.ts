@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { ReactNode } from 'react';
-import { AppMailProps, AppMailReplyProps, AppMailSidebarItem, ChartDataState, ChartOptionsState, CustomEvent, Demo, LayoutType, SortOrderType } from './demo';
+import { AppMailProps, AppMailReplyProps, AppMailSidebarItem, ChartDataState, ChartOptionsState, CustomEvent, Demo, LayoutType, SortOrderType } from './app';
 import {
     AppBreadcrumbProps,
     AppConfigProps,

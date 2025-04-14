@@ -1,0 +1,27 @@
+.filter-input–table input {
+    width: 100%;
+}
+
+.filter-action-button {
+    max-width: 2em;
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .filter-input–table {
+        margin-top: 1em;
+    }
+
+    .filter-input–table input {
+        width: 90%;
+    }
+
+    .filter-action-button {
+        max-width: 6em;
+        text-align: center;
+    }
+
+    .form-action-button {
+        margin-top: 1em;
+    }
+}
