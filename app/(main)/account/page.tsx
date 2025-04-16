@@ -1,6 +1,6 @@
 'use client';
 
-import { IAdmin } from '@/models/admin';
+import { IAccount } from '@/models/account';
 import { useRouter } from 'next/navigation';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Button } from 'primereact/button';
@@ -10,15 +10,15 @@ import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import React, { useCallback, useEffect, useState } from 'react';
 
-const TableAdmin = () => {
-    const [list, setList] = useState<IAdmin[]>([]);
+const TableAccount = () => {
+    const [list, setList] = useState<IAccount[]>([]);
     const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState<DataTableFilterMeta>({});
     const [globalFilterValue, setGlobalFilterValue] = useState('');
 
     const router = useRouter();
-    const statusBodyTemplate = (rowData: IAdmin) => <Tag value={rowData.status ? 'AKTIF' : 'TIDAK AKTIF'} severity={rowData.status ? (rowData.type === 'root' ? 'info' : 'success') : 'warning'} />;
-    const editBodyTemplate = (rowData: IAdmin) => <Button icon="pi pi-pencil" outlined onClick={() => router.push(`/admin/${rowData.id}`)} />;
+    const statusBodyTemplate = (rowData: IAccount) => <Tag value={rowData.status ? 'AKTIF' : 'TIDAK AKTIF'} severity={rowData.status ? 'success' : 'warning'} />;
+    const editBodyTemplate = (rowData: IAccount) => <Button icon="pi pi-pencil" outlined onClick={() => router.push(`/account/${rowData.id}`)} />;
 
     const initFilters = () => {
         setGlobalFilterValue('');
@@ -28,7 +28,11 @@ const TableAdmin = () => {
                 operator: FilterOperator.AND,
                 constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }]
             },
-            phone: {
+            number: {
+                operator: FilterOperator.AND,
+                constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }]
+            },
+            area: {
                 operator: FilterOperator.AND,
                 constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }]
             },
@@ -41,7 +45,7 @@ const TableAdmin = () => {
 
     const fetching = useCallback(async () => {
         try {
-            const response = await fetch('/api/admin', { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+            const response = await fetch('/api/account', { method: 'GET', headers: { 'Content-Type': 'application/json' } });
             setList(await response.json());
         } catch (_) {}
 
@@ -61,7 +65,7 @@ const TableAdmin = () => {
     const renderHeader = () => {
         return (
             <div className="flex justify-content-between flex-wrap">
-                <Button type="button" icon="pi pi-user" label="Tambah" outlined onClick={() => router.push('/admin/baru')} />
+                <Button type="button" icon="pi pi-user" label="Tambah" outlined onClick={() => router.push('/account/baru')} />
                 <span className="p-input-icon-left filter-input–table">
                     <i className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Pencarian" />
@@ -79,7 +83,7 @@ const TableAdmin = () => {
         <div className="grid">
             <div className="col-12">
                 <div className="card">
-                    <h5>Data Admin / Pengurus ({list.length})</h5>
+                    <h5>Data Nasabah / Anggota ({list.length})</h5>
                     <DataTable
                         className="p-datatable-gridlines"
                         header={renderHeader}
@@ -89,14 +93,15 @@ const TableAdmin = () => {
                         rows={10}
                         dataKey="id"
                         filterDisplay="menu"
-                        emptyMessage="Tidak ditemukan data admin!"
+                        emptyMessage="Tidak ditemukan data anggota!"
                         paginator
                         showGridlines
                         stripedRows
                         scrollable
                     >
-                        <Column field="phone" header="Telepon" />
+                        <Column field="number" header="No Anggota" />
                         <Column field="name" header="Nama" />
+                        <Column field="area" header="Area (RT)" />
                         <Column field="status" header="Status" body={statusBodyTemplate} />
                         <Column header="" body={editBodyTemplate} className="filter-action-button" />
                     </DataTable>
@@ -106,4 +111,4 @@ const TableAdmin = () => {
     );
 };
 
-export default TableAdmin;
+export default TableAccount;

@@ -1,66 +1,45 @@
 'use client';
 
-import { secretCrypto } from '@/lib/constant';
-import { IAdmin } from '@/models/admin';
-import { AES, enc } from 'crypto-js';
+import { IAccount } from '@/models/account';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
-import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
 import { InputText } from 'primereact/inputtext';
 import { Toast } from 'primereact/toast';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-interface TypeItem {
-    name: string;
-    code: string;
-}
-
-const FormAdmin = ({ params }: { params: Promise<{ slug: string }> }) => {
-    const [typeItem, setTypeItem] = useState<TypeItem | null>(null);
+const FormAccount = ({ params }: { params: Promise<{ slug: string }> }) => {
     const [action, setAction] = useState('baru');
     const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
-    const [password, setPassword] = useState('');
+    const [area, setArea] = useState('');
+    const [number, setNumber] = useState('');
     const [active, setActive] = useState(true);
     const [isLoad, setLoad] = useState(false);
 
     const router = useRouter();
     const toast = useRef<Toast>(null);
 
-    const typesItems: TypeItem[] = useMemo(
-        () => [
-            { code: 'root', name: 'DEVELOPER' },
-            { code: 'admin', name: 'PENGURUS' }
-        ],
-        []
-    );
+    const fetching = useCallback(async (id: string) => {
+        try {
+            const response = await fetch(`/api/account/${id}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+            const account: IAccount = await response.json();
 
-    const fetching = useCallback(
-        async (id: string) => {
-            try {
-                const response = await fetch(`/api/admin/${id}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
-                const admin: IAdmin = await response.json();
-
-                if (admin) {
-                    setAction(admin.id);
-                    setName(admin.name);
-                    setPhone(admin.phone);
-                    setActive(admin.status);
-                    setPassword(AES.decrypt(admin.password, secretCrypto).toString(enc.Utf8));
-                    setTypeItem(typesItems.find((item) => item.code === admin.type) || typesItems[0]);
-                }
-            } catch (_) {
-                toast.current?.show({
-                    life: 3000,
-                    severity: 'warn',
-                    summary: 'Gagal memuat!',
-                    detail: 'Data tidak dapat diambil atau tidak ditemukan'
-                });
+            if (account) {
+                setAction(account.id);
+                setName(account.name);
+                setArea(account.area);
+                setActive(account.status);
+                setNumber(account.number);
             }
-        },
-        [typesItems]
-    );
+        } catch (_) {
+            toast.current?.show({
+                life: 3000,
+                severity: 'warn',
+                summary: 'Gagal memuat!',
+                detail: 'Data tidak dapat diambil atau tidak ditemukan'
+            });
+        }
+    }, []);
 
     useEffect(() => {
         const setFormAction = async () => {
@@ -82,23 +61,19 @@ const FormAdmin = ({ params }: { params: Promise<{ slug: string }> }) => {
             <div className="col-12">
                 <div className="card">
                     <Toast ref={toast} />
-                    <h5>{action === 'baru' ? 'Tambah' : 'Ubah'} Profil Admin</h5>
+                    <h5>{action === 'baru' ? 'Tambah' : 'Ubah'} Profil Anggota</h5>
                     <div className="p-fluid">
                         <div className="field">
                             <label htmlFor="name">Nama</label>
-                            <InputText id="name" type="text" placeholder="Nama admin" value={name} onChange={(e) => setName(e.target.value)} />
+                            <InputText id="name" type="text" placeholder="Nama anggota" value={name} onChange={(e) => setName(e.target.value)} />
                         </div>
                         <div className="field">
-                            <label htmlFor="phone">No Telepon</label>
-                            <InputText id="phone" type="tel" placeholder="No telepon admin" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                            <label htmlFor="number">No Anggota</label>
+                            <InputText id="number" type="text" placeholder="No anggota" value={number} onChange={(e) => setNumber(e.target.value)} />
                         </div>
                         <div className="field">
-                            <label htmlFor="password">Sandi</label>
-                            <InputText id="password" type="password" placeholder="Kata sandi akun admin" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        </div>
-                        <div className="field">
-                            <label htmlFor="type">Otoritas</label>
-                            <Dropdown id="type" value={typeItem ?? typesItems.at(0)} onChange={(e) => setTypeItem(e.value)} options={typesItems} optionLabel="name" placeholder="Hak akses admin" />
+                            <label htmlFor="area">Area (RT)</label>
+                            <InputText id="area" type="text" placeholder="Domisili/RT anggota" value={area} onChange={(e) => setArea(e.target.value)} />
                         </div>
                         <div className="field">
                             <label htmlFor="status" className={`text-${active ? 'green' : 'red'}-500`}>
@@ -119,7 +94,7 @@ const FormAdmin = ({ params }: { params: Promise<{ slug: string }> }) => {
                                 className="form-action-button"
                                 onClick={async () => {
                                     setLoad(true);
-                                    const response = await fetch('/api/admin', { method: 'POST', body: JSON.stringify({ action, name, phone, password, status: active, type: typeItem?.code }), headers: { 'Content-Type': 'application/json' } });
+                                    const response = await fetch('/api/account', { method: 'POST', body: JSON.stringify({ action, name, number, area, status: active }), headers: { 'Content-Type': 'application/json' } });
                                     const result = await response.json();
                                     setLoad(false);
 
@@ -143,4 +118,4 @@ const FormAdmin = ({ params }: { params: Promise<{ slug: string }> }) => {
     );
 };
 
-export default FormAdmin;
+export default FormAccount;
