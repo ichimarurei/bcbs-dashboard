@@ -17,8 +17,8 @@ const TableAdmin = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState('');
 
     const router = useRouter();
-    const statusBodyTemplate = (rowData: IAdmin) => <Tag value={rowData.status ? 'AKTIF' : 'TIDAK AKTIF'} severity={rowData.status ? 'success' : 'warning'} />;
-    const editBodyTemplate = (rowData: IAdmin) => <Button icon="pi pi-pencil" outlined onClick={() => router.push(`/admin/${rowData._id}`)} />;
+    const statusBodyTemplate = (rowData: IAdmin) => <Tag value={rowData.status ? 'AKTIF' : 'TIDAK AKTIF'} severity={rowData.status ? (rowData.type === 'root' ? 'info' : 'success') : 'warning'} />;
+    const editBodyTemplate = (rowData: IAdmin) => <Button icon="pi pi-pencil" outlined onClick={() => router.push(`/admin/${rowData.id}`)} />;
 
     const initFilters = () => {
         setGlobalFilterValue('');

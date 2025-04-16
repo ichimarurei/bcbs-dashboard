@@ -1,11 +1,15 @@
 'use client';
 
+import { secretCrypto } from '@/lib/constant';
+import { IAdmin } from '@/models/admin';
+import { AES, enc } from 'crypto-js';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
 import { InputText } from 'primereact/inputtext';
-import { useEffect, useMemo, useState } from 'react';
+import { Toast } from 'primereact/toast';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface TypeItem {
     name: string;
@@ -19,8 +23,10 @@ const FormAdmin = ({ params }: { params: Promise<{ slug: string }> }) => {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [active, setActive] = useState(true);
+    const [isLoad, setLoad] = useState(false);
 
     const router = useRouter();
+    const toast = useRef<Toast>(null);
 
     const typesItems: TypeItem[] = useMemo(
         () => [
@@ -28,6 +34,33 @@ const FormAdmin = ({ params }: { params: Promise<{ slug: string }> }) => {
             { code: 'admin', name: 'PENGURUS' }
         ],
         []
+    );
+
+    const fetching = useCallback(
+        async (id: string) => {
+            try {
+                const response = await fetch(`/api/admin/${id}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+                const admin: IAdmin = await response.json();
+                console.log(admin);
+
+                if (admin) {
+                    setAction(admin.id);
+                    setName(admin.name);
+                    setPhone(admin.phone);
+                    setActive(admin.status);
+                    setPassword(AES.decrypt(admin.password, secretCrypto).toString(enc.Utf8));
+                    setTypeItem(typesItems.find((item) => item.code === admin.type) || typesItems[0]);
+                }
+            } catch (_) {
+                toast.current?.show({
+                    life: 3000,
+                    severity: 'warn',
+                    summary: 'Gagal memuat!',
+                    detail: 'Data tidak dapat diambil atau tidak ditemukan'
+                });
+            }
+        },
+        [typesItems]
     );
 
     useEffect(() => {
@@ -41,10 +74,15 @@ const FormAdmin = ({ params }: { params: Promise<{ slug: string }> }) => {
         setFormAction();
     }, [params]);
 
+    useEffect(() => {
+        fetching(action);
+    }, [action, fetching]);
+
     return (
         <div className="grid">
             <div className="col-12">
                 <div className="card">
+                    <Toast ref={toast} />
                     <h5>{action === 'baru' ? 'Tambah' : 'Ubah'} Profil Admin</h5>
                     <div className="p-fluid">
                         <div className="field">
@@ -75,7 +113,30 @@ const FormAdmin = ({ params }: { params: Promise<{ slug: string }> }) => {
                     <hr />
                     <div className="flex justify-content-between flex-wrap">
                         <Button label="Batal" icon="pi pi-times" severity="info" onClick={() => router.back()} />
-                        <Button label="Simpan" icon="pi pi-check" className="form-action-button" />
+                        {!isLoad && (
+                            <Button
+                                label="Simpan"
+                                icon="pi pi-check"
+                                className="form-action-button"
+                                onClick={async () => {
+                                    setLoad(true);
+                                    const response = await fetch('/api/admin', { method: 'POST', body: JSON.stringify({ action, name, phone, password, status: active, type: typeItem?.code }), headers: { 'Content-Type': 'application/json' } });
+                                    const result = await response.json();
+                                    setLoad(false);
+
+                                    if (result?.saved) {
+                                        router.back();
+                                    } else {
+                                        toast.current?.show({
+                                            life: 3000,
+                                            severity: 'warn',
+                                            summary: 'Gagal simpan!',
+                                            detail: 'Data tidak dapat disimpan oleh Sistem'
+                                        });
+                                    }
+                                }}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
