@@ -9,6 +9,7 @@ import { cloneDeep, forIn } from 'lodash';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
 import { Chart } from 'primereact/chart';
+import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState } from 'react';
 
 const chartDefault: { [key: string]: number } = { January: 0, February: 0, March: 0, April: 0, May: 0, June: 0, July: 0, August: 0, September: 0, October: 0, November: 0, December: 0 };
@@ -20,6 +21,7 @@ const Dashboard = () => {
     const [actual, setActual] = useState(0);
     const [keeper, setKeeper] = useState(0);
     const [transparent, setTransparent] = useState(0);
+    const [isLoad, setLoad] = useState(true);
     const [chartSave, setChartSave] = useState<{ [key: string]: number }>(cloneDeep(chartDefault));
     const [chartLoan, setChartLoan] = useState<{ [key: string]: number }>(cloneDeep(chartDefault));
     const [chartDebt, setChartDebt] = useState<{ [key: string]: number }>(cloneDeep(chartDefault));
@@ -29,6 +31,8 @@ const Dashboard = () => {
     const router = useRouter();
 
     const fetchTransparent = async () => {
+        setLoad(true);
+
         try {
             const response = await fetch('/api/stats', { method: 'GET', headers: { 'Content-Type': 'application/json' } });
             const stats = await response.json();
@@ -97,6 +101,8 @@ const Dashboard = () => {
                 setTransparent(recorded);
             }
         } catch (_) {}
+
+        setLoad(false);
     };
 
     useEffect(() => {
@@ -211,93 +217,127 @@ const Dashboard = () => {
             .replace(',00', '');
     };
 
+    const SkeletonLoad = ({ col = '', height = 250 }: { col?: string; height?: number }) => (
+        <div className={col}>
+            <Skeleton width="100%" height={`${height}px`} />
+        </div>
+    );
+
     return (
         <div className="grid p-fluid">
             <div className="col-12">
-                <div className="grid grid-nogutter surface-0 text-800">
-                    <div className="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
-                        <section>
-                            <span className="block text-6xl font-bold mb-1">Baitul Mal</span>
-                            <div className="text-6xl text-primary font-bold mb-3">Cicurug Bata</div>
-                            <p className="mt-0 mb-4 text-700 line-height-3">
-                                Nominal transparansi keuangan terdata sebesar {transparent !== actual && '🔥'} <b className={`text-${transparent === actual ? 'green' : 'red'}-500`}>{formatCurrency(transparent)}</b>.
-                            </p>
-                            <Button label="Detail" type="button" className="p-button-outlined" onClick={() => router.replace('/')} />
-                        </section>
+                {!isLoad ? (
+                    <div className="grid grid-nogutter surface-0 text-800">
+                        <div className="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
+                            <section>
+                                <span className="block text-6xl font-bold mb-1">Baitul Mal</span>
+                                <div className="text-6xl text-primary font-bold mb-3">Cicurug Bata</div>
+                                <p className="mt-0 mb-4 text-700 line-height-3">
+                                    Nominal transparansi keuangan terdata sebesar {transparent !== actual && '🔥'} <b className={`text-${transparent === actual ? 'green' : 'red'}-500`}>{formatCurrency(transparent)}</b>.
+                                </p>
+                                <Button label="Detail" type="button" className="p-button-outlined" onClick={() => router.replace('/')} />
+                            </section>
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <SkeletonLoad col="col-12 md:col-6" />
+                )}
             </div>
 
             <div className="col-12 lg:col-6 xl:col-3">
-                <div className="card mb-0">
-                    <div className="flex justify-content-between mb-3">
-                        <div>
-                            <span className="block text-500 font-medium mb-3">Saldo Terkini</span>
-                            <div className="text-900 font-medium text-xl">
-                                {transparent !== actual && '🔥'} {formatCurrency(actual)}
+                {!isLoad ? (
+                    <div className="card mb-0">
+                        <div className="flex justify-content-between mb-3">
+                            <div>
+                                <span className="block text-500 font-medium mb-3">Saldo Terkini</span>
+                                <div className="text-900 font-medium text-xl">
+                                    {transparent !== actual && '🔥'} {formatCurrency(actual)}
+                                </div>
+                            </div>
+                            <div className="flex align-items-center justify-content-center bg-blue-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
+                                <i className="pi pi-calculator text-blue-500 text-xl" />
                             </div>
                         </div>
-                        <div className="flex align-items-center justify-content-center bg-blue-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                            <i className="pi pi-calculator text-blue-500 text-xl" />
-                        </div>
+                        <span className={`text-${transparent === actual ? 'blue' : 'red'}-500 font-medium`}>Total saldo/kas</span>
                     </div>
-                    <span className={`text-${transparent === actual ? 'blue' : 'red'}-500 font-medium`}>Total saldo/kas</span>
-                </div>
+                ) : (
+                    <SkeletonLoad height={150} />
+                )}
             </div>
             <div className="col-12 lg:col-6 xl:col-3">
-                <div className="card mb-0">
-                    <div className="flex justify-content-between mb-3">
-                        <div>
-                            <span className="block text-500 font-medium mb-3">Saldo Aman</span>
-                            <div className="text-900 font-medium text-xl">{formatCurrency(keeper)}</div>
+                {!isLoad ? (
+                    <div className="card mb-0">
+                        <div className="flex justify-content-between mb-3">
+                            <div>
+                                <span className="block text-500 font-medium mb-3">Saldo Aman</span>
+                                <div className="text-900 font-medium text-xl">{formatCurrency(keeper)}</div>
+                            </div>
+                            <div className="flex align-items-center justify-content-center bg-green-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
+                                <i className="pi pi-money-bill text-green-500 text-xl" />
+                            </div>
                         </div>
-                        <div className="flex align-items-center justify-content-center bg-green-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                            <i className="pi pi-money-bill text-green-500 text-xl" />
-                        </div>
+                        <span className="text-green-500 font-medium">Batas aman saldo/kas</span>
                     </div>
-                    <span className="text-green-500 font-medium">Batas aman saldo/kas</span>
-                </div>
+                ) : (
+                    <SkeletonLoad height={150} />
+                )}
             </div>
             <div className="col-12 lg:col-6 xl:col-3">
-                <div className="card mb-0">
-                    <div className="flex justify-content-between mb-3">
-                        <div>
-                            <span className="block text-500 font-medium mb-3">Simpanan</span>
-                            <div className="text-900 font-medium text-xl">{formatCurrency(debit)}</div>
+                {!isLoad ? (
+                    <div className="card mb-0">
+                        <div className="flex justify-content-between mb-3">
+                            <div>
+                                <span className="block text-500 font-medium mb-3">Simpanan</span>
+                                <div className="text-900 font-medium text-xl">{formatCurrency(debit)}</div>
+                            </div>
+                            <div className="flex align-items-center justify-content-center bg-cyan-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
+                                <i className="pi pi-wallet text-cyan-500 text-xl" />
+                            </div>
                         </div>
-                        <div className="flex align-items-center justify-content-center bg-cyan-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                            <i className="pi pi-wallet text-cyan-500 text-xl" />
-                        </div>
+                        <span className="text-cyan-500 font-medium">Tabungan anggota</span>
                     </div>
-                    <span className="text-cyan-500 font-medium">Tabungan anggota</span>
-                </div>
+                ) : (
+                    <SkeletonLoad height={150} />
+                )}
             </div>
             <div className="col-12 lg:col-6 xl:col-3">
-                <div className="card mb-0">
-                    <div className="flex justify-content-between mb-3">
-                        <div>
-                            <span className="block text-500 font-medium mb-3">Kredit</span>
-                            <div className="text-900 font-medium text-xl">{formatCurrency(kredit)}</div>
+                {!isLoad ? (
+                    <div className="card mb-0">
+                        <div className="flex justify-content-between mb-3">
+                            <div>
+                                <span className="block text-500 font-medium mb-3">Kredit</span>
+                                <div className="text-900 font-medium text-xl">{formatCurrency(kredit)}</div>
+                            </div>
+                            <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
+                                <i className="pi pi-credit-card text-orange-500 text-xl" />
+                            </div>
                         </div>
-                        <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                            <i className="pi pi-credit-card text-orange-500 text-xl" />
-                        </div>
+                        <span className="text-orange-500 font-medium">Kredit anggota</span>
                     </div>
-                    <span className="text-orange-500 font-medium">Kredit anggota</span>
-                </div>
+                ) : (
+                    <SkeletonLoad height={150} />
+                )}
             </div>
 
             <div className="col-12 xl:col-6">
-                <div className="card flex flex-column align-items-center">
-                    <h5 className="text-left w-full">Transaksi</h5>
-                    <Chart type="pie" data={chartData.pieData} options={chartOptions.pieOptions} />
-                </div>
+                {!isLoad ? (
+                    <div className="card flex flex-column align-items-center">
+                        <h5 className="text-left w-full">Transaksi</h5>
+                        <Chart type="pie" data={chartData.pieData} options={chartOptions.pieOptions} />
+                    </div>
+                ) : (
+                    <SkeletonLoad height={450} />
+                )}
             </div>
             <div className="col-12 xl:col-6">
-                <div className="card">
-                    <h5>Pergerakan di {dayjs().get('year')}</h5>
-                    <Chart type="line" data={chartData.lineData} options={chartOptions.lineOptions} />
-                </div>
+                {!isLoad ? (
+                    <div className="card">
+                        <h5>Pergerakan di {dayjs().get('year')}</h5>
+                        <Chart type="line" data={chartData.lineData} options={chartOptions.lineOptions} />
+                    </div>
+                ) : (
+                    <SkeletonLoad height={450} />
+                )}
             </div>
         </div>
     );
