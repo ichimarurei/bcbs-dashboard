@@ -2,7 +2,7 @@
 
 import { IAccount } from '@/models/account';
 import { useRouter } from 'next/navigation';
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { FilterMatchMode } from 'primereact/api';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable, DataTableFilterMeta } from 'primereact/datatable';
@@ -22,25 +22,7 @@ const TableAccount = () => {
 
     const initFilters = () => {
         setGlobalFilterValue('');
-        setFilters({
-            global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-            name: {
-                operator: FilterOperator.AND,
-                constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }]
-            },
-            number: {
-                operator: FilterOperator.AND,
-                constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }]
-            },
-            area: {
-                operator: FilterOperator.AND,
-                constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }]
-            },
-            status: {
-                operator: FilterOperator.AND,
-                constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]
-            }
-        });
+        setFilters({ global: { value: null, matchMode: FilterMatchMode.CONTAINS } });
     };
 
     const fetching = useCallback(async () => {

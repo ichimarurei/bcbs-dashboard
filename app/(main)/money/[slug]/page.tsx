@@ -1,19 +1,20 @@
 'use client';
 
-import { IAccount } from '@/models/account';
+import { IBank } from '@/models/bank';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
-import { InputSwitch } from 'primereact/inputswitch';
+import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { Toast } from 'primereact/toast';
 import { useEffect, useRef, useState } from 'react';
 
-const FormAccount = ({ params }: { params: Promise<{ slug: string }> }) => {
-    const [action, setAction] = useState('baru');
-    const [name, setName] = useState('');
-    const [area, setArea] = useState('');
+const FormBank = ({ params }: { params: Promise<{ slug: string }> }) => {
+    const [action, setAction] = useState('');
+    const [bank, setBank] = useState('');
+    const [account, setAccount] = useState('');
     const [number, setNumber] = useState('');
-    const [active, setActive] = useState(true);
+    const [proof, setProof] = useState('');
+    const [amount, setAmount] = useState(0);
     const [isLoad, setLoad] = useState(false);
 
     const router = useRouter();
@@ -21,15 +22,17 @@ const FormAccount = ({ params }: { params: Promise<{ slug: string }> }) => {
 
     const fetching = async (id: string) => {
         try {
-            const response = await fetch(`/api/account/${id}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
-            const account: IAccount = await response.json();
+            const response = await fetch(`/api/money/${id}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+            const notes: IBank = await response.json();
 
-            if (account) {
-                setAction(account.id);
-                setName(account.name);
-                setArea(account.area);
-                setActive(account.status);
-                setNumber(account.number);
+            if (notes) {
+                setAction(notes.id);
+                setBank(notes.bank);
+                setAccount(notes.account);
+                setNumber(notes.number);
+                setAmount(notes.amount);
+                setProof(notes.proof || '');
+                console.log(notes);
             }
         } catch (_) {
             toast.current?.show({
@@ -46,38 +49,42 @@ const FormAccount = ({ params }: { params: Promise<{ slug: string }> }) => {
             try {
                 const { slug } = await params;
                 await fetching(slug);
+
+                if (!slug || slug === 'baru') {
+                    router.back();
+                }
             } catch (_) {}
         };
 
         setFormAction();
-    }, [params]);
+    }, [params, router]);
 
     return (
         <div className="grid">
             <div className="col-12">
                 <div className="card">
                     <Toast ref={toast} />
-                    <h5>{action === 'baru' ? 'Tambah' : 'Ubah'} Profil Anggota</h5>
+                    <h5>Ubah Data Transparansi Keuangan</h5>
                     <div className="p-fluid">
                         <div className="field">
-                            <label htmlFor="name">Nama</label>
-                            <InputText id="name" type="text" placeholder="Nama anggota" value={name} onChange={(e) => setName(e.target.value)} />
+                            <label htmlFor="bank">Bank</label>
+                            <InputText id="bank" type="text" placeholder="Bank / kas" value={bank} onChange={(e) => setBank(e.target.value)} />
                         </div>
                         <div className="field">
-                            <label htmlFor="number">No Anggota</label>
-                            <InputText id="number" type="text" placeholder="No anggota" value={number} onChange={(e) => setNumber(e.target.value)} />
+                            <label htmlFor="account">Nama</label>
+                            <InputText id="account" type="text" placeholder="Nama" value={account} onChange={(e) => setAccount(e.target.value)} />
                         </div>
                         <div className="field">
-                            <label htmlFor="area">Area (RT)</label>
-                            <InputText id="area" type="text" placeholder="Domisili/RT anggota" value={area} onChange={(e) => setArea(e.target.value)} />
+                            <label htmlFor="number">Rekening</label>
+                            <InputText id="number" type="text" placeholder="No rekening/telepon" value={number} onChange={(e) => setNumber(e.target.value)} />
                         </div>
                         <div className="field">
-                            <label htmlFor="status" className={`text-${active ? 'green' : 'red'}-500`}>
-                                Status {active ? 'AKTIF' : 'TIDAK AKTIF'}
-                            </label>
+                            <label htmlFor="amount">Nominal</label>
+                            <InputNumber id="amount" placeholder="Nominal" value={amount} onValueChange={(e) => setAmount(e.value || 0)} min={0} maxFractionDigits={0} mode="currency" currency="IDR" />
                         </div>
                         <div className="field">
-                            <InputSwitch id="status" checked={active} onChange={(e) => setActive(e.value)} />
+                            <label htmlFor="proof">Bukti</label>
+                            <InputText id="proof" type="text" placeholder="Bukti nominal saldo" value={proof} onChange={(e) => setProof(e.target.value)} />
                         </div>
                     </div>
                     <hr />
@@ -90,7 +97,7 @@ const FormAccount = ({ params }: { params: Promise<{ slug: string }> }) => {
                                 className="form-action-button"
                                 onClick={async () => {
                                     setLoad(true);
-                                    const response = await fetch('/api/account', { method: 'POST', body: JSON.stringify({ action, name, number, area, status: active }), headers: { 'Content-Type': 'application/json' } });
+                                    const response = await fetch('/api/money', { method: 'POST', body: JSON.stringify({ action, bank, account, number, amount, proof }), headers: { 'Content-Type': 'application/json' } });
                                     const result = await response.json();
                                     setLoad(false);
 
@@ -114,4 +121,4 @@ const FormAccount = ({ params }: { params: Promise<{ slug: string }> }) => {
     );
 };
 
-export default FormAccount;
+export default FormBank;

@@ -23,7 +23,7 @@ const AppMenu = () => {
             items: [
                 { label: 'Pengurus', icon: 'pi pi-fw pi-user', to: '/admin', badge: 'NEW' },
                 { label: 'Anggota', icon: 'pi pi-fw pi-users', to: '/account' },
-                { label: 'Transparansi', icon: 'pi pi-fw pi-bookmark', to: '/' }
+                { label: 'Transparansi', icon: 'pi pi-fw pi-bookmark', to: '/money' }
             ]
         }
     ];

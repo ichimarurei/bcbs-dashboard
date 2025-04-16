@@ -1,18 +1,15 @@
-import { secretCrypto } from '@/lib/constant';
 import connectDB from '@/lib/mongo';
-import admin, { IAdmin } from '@/models/admin';
-import { AES } from 'crypto-js';
+import bank, { IBank } from '@/models/bank';
 import { isEmpty } from 'lodash';
 import { NextRequest } from 'next/server';
-import { v4 as uuid } from 'uuid';
 
 export async function GET(_: NextRequest) {
     let response: Response = Response.json({ error: 'Unprocessable operation!' }, { status: 422 });
 
     try {
         await connectDB();
-        const admins = await admin.find().lean<IAdmin[]>();
-        response = Response.json(admins, { status: 200 });
+        const banks = await bank.find().sort({ amount: 'desc', account: 'asc' }).lean<IBank[]>();
+        response = Response.json(banks, { status: 200 });
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Server error';
         response = Response.json({ error: message }, { status: 500 });
@@ -26,14 +23,13 @@ export async function POST(request: NextRequest) {
 
     try {
         await connectDB();
-        let saved: IAdmin | null = null;
+        let saved: IBank | null = null;
         const params = await request.json();
-        const id = params?.action === 'baru' ? uuid() : params?.action;
-        const password = AES.encrypt(params?.password || params?.phone || 'bismillah', secretCrypto).toString();
-        const phone = params?.phone;
 
-        if (phone && !isEmpty(params?.name)) {
-            saved = await admin.findOneAndUpdate({ id }, { name: params?.name || `Pengurus ${id}`, type: params?.type || 'admin', status: params?.status || false, phone, password }, { upsert: true, new: true, lean: true }).lean<IAdmin>();
+        if (!isEmpty(params?.bank) && !isEmpty(params?.account) && !isEmpty(params?.action)) {
+            saved = await bank
+                .findOneAndUpdate({ id: params?.action }, { bank: params?.bank || '', account: params?.account || '', number: params?.number || '-', proof: params?.proof || '', amount: params?.amount || 0 }, { new: true, lean: true })
+                .lean<IBank>();
         }
 
         response = Response.json({ saved: !saved?._id ? false : true }, { status: 200 });

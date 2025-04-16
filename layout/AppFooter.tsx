@@ -8,9 +8,7 @@ const AppFooter = () => {
 
     return (
         <div className="layout-footer">
-            <img src={`/images/layout/logo-${layoutConfig.colorScheme === 'light' ? 'dark' : 'white'}.svg`} alt="Logo" height="20" className="mr-2" />
-            version
-            <span className="font-medium ml-2">2.0</span>
+            <img src={`/images/layout/logo-${layoutConfig.colorScheme === 'light' ? 'dark' : 'white'}.svg`} alt="Logo" height="20" className="mr-2" /> Hand-crafted & Made by <span className="font-medium ml-2">Iqbal</span>
         </div>
     );
 };

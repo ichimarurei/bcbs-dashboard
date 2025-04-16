@@ -17,7 +17,15 @@ interface TypeItem {
 }
 
 const FormAdmin = ({ params }: { params: Promise<{ slug: string }> }) => {
-    const [typeItem, setTypeItem] = useState<TypeItem | null>(null);
+    const typesItems: TypeItem[] = useMemo(
+        () => [
+            { code: 'root', name: 'DEVELOPER' },
+            { code: 'admin', name: 'PENGURUS' }
+        ],
+        []
+    );
+
+    const [typeItem, setTypeItem] = useState<TypeItem>(typesItems[1]);
     const [action, setAction] = useState('baru');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
@@ -27,14 +35,6 @@ const FormAdmin = ({ params }: { params: Promise<{ slug: string }> }) => {
 
     const router = useRouter();
     const toast = useRef<Toast>(null);
-
-    const typesItems: TypeItem[] = useMemo(
-        () => [
-            { code: 'root', name: 'DEVELOPER' },
-            { code: 'admin', name: 'PENGURUS' }
-        ],
-        []
-    );
 
     const fetching = useCallback(
         async (id: string) => {
@@ -66,16 +66,12 @@ const FormAdmin = ({ params }: { params: Promise<{ slug: string }> }) => {
         const setFormAction = async () => {
             try {
                 const { slug } = await params;
-                setAction(slug);
+                await fetching(slug);
             } catch (_) {}
         };
 
         setFormAction();
-    }, [params]);
-
-    useEffect(() => {
-        fetching(action);
-    }, [action, fetching]);
+    }, [fetching, params]);
 
     return (
         <div className="grid">

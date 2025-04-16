@@ -1,24 +1,24 @@
 'use client';
 
-import { IAdmin } from '@/models/admin';
+import { formatRp } from '@/lib/function';
+import { IBank } from '@/models/bank';
 import { useRouter } from 'next/navigation';
 import { FilterMatchMode } from 'primereact/api';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable, DataTableFilterMeta } from 'primereact/datatable';
 import { InputText } from 'primereact/inputtext';
-import { Tag } from 'primereact/tag';
 import React, { useCallback, useEffect, useState } from 'react';
 
-const TableAdmin = () => {
-    const [list, setList] = useState<IAdmin[]>([]);
+const TableBank = () => {
+    const [list, setList] = useState<IBank[]>([]);
     const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState<DataTableFilterMeta>({});
     const [globalFilterValue, setGlobalFilterValue] = useState('');
 
     const router = useRouter();
-    const statusBodyTemplate = (rowData: IAdmin) => <Tag value={rowData.status ? 'AKTIF' : 'TIDAK AKTIF'} severity={rowData.status ? (rowData.type === 'root' ? 'info' : 'success') : 'warning'} />;
-    const editBodyTemplate = (rowData: IAdmin) => <Button icon="pi pi-pencil" outlined onClick={() => router.push(`/admin/${rowData.id}`)} />;
+    const rpBodyTemplate = (rowData: IBank) => formatRp(rowData.amount);
+    const editBodyTemplate = (rowData: IBank) => <Button icon="pi pi-pencil" outlined onClick={() => router.push(`/money/${rowData.id}`)} />;
 
     const initFilters = () => {
         setGlobalFilterValue('');
@@ -27,7 +27,7 @@ const TableAdmin = () => {
 
     const fetching = useCallback(async () => {
         try {
-            const response = await fetch('/api/admin', { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+            const response = await fetch('/api/money', { method: 'GET', headers: { 'Content-Type': 'application/json' } });
             setList(await response.json());
         } catch (_) {}
 
@@ -47,7 +47,6 @@ const TableAdmin = () => {
     const renderHeader = () => {
         return (
             <div className="flex justify-content-between flex-wrap">
-                <Button type="button" icon="pi pi-user" label="Tambah" outlined onClick={() => router.push('/admin/baru')} />
                 <span className="p-input-icon-left filter-input–table">
                     <i className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Pencarian" />
@@ -65,7 +64,7 @@ const TableAdmin = () => {
         <div className="grid">
             <div className="col-12">
                 <div className="card">
-                    <h5>Data Admin / Pengurus ({list.length})</h5>
+                    <h5>Data Transparansi Keuangan</h5>
                     <DataTable
                         className="p-datatable-gridlines"
                         header={renderHeader}
@@ -75,15 +74,16 @@ const TableAdmin = () => {
                         rows={10}
                         dataKey="id"
                         filterDisplay="menu"
-                        emptyMessage="Tidak ditemukan data admin!"
+                        emptyMessage="Tidak ditemukan data transparansi!"
                         paginator
                         showGridlines
                         stripedRows
                         scrollable
                     >
-                        <Column field="phone" header="Telepon" />
-                        <Column field="name" header="Nama" />
-                        <Column field="status" header="Status" body={statusBodyTemplate} />
+                        <Column field="bank" header="Bank / Kas" />
+                        <Column field="number" header="No Rekening/Telepon" />
+                        <Column field="account" header="Nama" />
+                        <Column field="amount" header="Nominal" body={rpBodyTemplate} />
                         <Column header="" body={editBodyTemplate} className="filter-action-button" />
                     </DataTable>
                 </div>
@@ -92,4 +92,4 @@ const TableAdmin = () => {
     );
 };
 
-export default TableAdmin;
+export default TableBank;

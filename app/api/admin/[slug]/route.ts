@@ -8,7 +8,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ slug: 
     try {
         await connectDB();
         const { slug } = await params;
-        const user = await admin.findOne({ id: slug }).lean<IAdmin[]>();
+        const user = await admin.findOne({ id: slug }).lean<IAdmin>();
         response = Response.json(user, { status: !user ? 404 : 200 });
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Server error';

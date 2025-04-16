@@ -1,5 +1,5 @@
 import connectDB from '@/lib/mongo';
-import account, { IAccount } from '@/models/account';
+import bank, { IBank } from '@/models/bank';
 import { NextRequest } from 'next/server';
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
@@ -8,8 +8,8 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ slug: 
     try {
         await connectDB();
         const { slug } = await params;
-        const user = await account.findOne({ id: slug }).lean<IAccount>();
-        response = Response.json(user, { status: !user ? 404 : 200 });
+        const notes = await bank.findOne({ id: slug }).lean<IBank>();
+        response = Response.json(notes, { status: !notes ? 404 : 200 });
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Server error';
         response = Response.json({ error: message }, { status: 500 });
