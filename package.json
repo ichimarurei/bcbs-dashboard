@@ -8,7 +8,7 @@
     },
     "scripts": {
         "dev": "yarn && yarn format && next dev",
-        "build": "yarn && yarn format && next build",
+        "build": "next build",
         "start": "next start",
         "format": "prettier --check --write \"{app,demo,layout,types}/**/*.{js,ts,tsx,d.ts}\"",
         "lint": "next lint"
