@@ -32,7 +32,6 @@ const FormBank = ({ params }: { params: Promise<{ slug: string }> }) => {
                 setNumber(notes.number);
                 setAmount(notes.amount);
                 setProof(notes.proof || '');
-                console.log(notes);
             }
         } catch (_) {
             toast.current?.show({

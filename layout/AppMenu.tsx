@@ -12,8 +12,8 @@ const AppMenu = () => {
         {
             label: 'Transaksi',
             items: [
-                { label: 'Simpanan', icon: 'pi pi-fw pi-wallet', to: '/' },
-                { label: 'Pinjaman', icon: 'pi pi-fw pi-credit-card', to: '/' },
+                { label: 'Simpanan', icon: 'pi pi-fw pi-wallet', to: '/flow/saving' },
+                { label: 'Pinjaman', icon: 'pi pi-fw pi-credit-card', to: '/flow/loan' },
                 { label: 'Infaq', icon: 'pi pi-fw pi-money-bill', to: '/' },
                 { label: 'Laporan', icon: 'pi pi-fw pi-file', to: '/' }
             ]
