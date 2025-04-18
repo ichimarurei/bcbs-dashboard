@@ -48,7 +48,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <meta property="og:image" content="https://bcbs-dashboard-v2.vercel.app/images/layout/icon-512x512.jpg" />
 
                 <meta name="viewport" content="initial-scale=1, viewport-fit=cover, width=device-width"></meta>
-                <link id="theme-css" href={`/themes/lara-dark-purple/theme.css`} rel="stylesheet"></link>
+                <link rel="stylesheet" id="theme-css" href={`/themes/lara-dark-purple/theme.css`}></link>
                 <link rel="manifest" href="/manifest.json" />
             </head>
             <body>
