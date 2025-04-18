@@ -10,7 +10,7 @@ import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-const TableCustomerTransaction = ({ params }: { params: Promise<{ slug: string }> }) => {
+const TableTransactionRecord = ({ params }: { params: Promise<{ slug: string[] }> }) => {
     const [list, setList] = useState<IAccount[]>([]);
     const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState<DataTableFilterMeta>({});
@@ -19,7 +19,7 @@ const TableCustomerTransaction = ({ params }: { params: Promise<{ slug: string }
 
     const router = useRouter();
     const statusBodyTemplate = (rowData: IAccount) => <Tag value={rowData.status ? 'AKTIF' : 'TIDAK AKTIF'} severity={rowData.status ? 'success' : 'warning'} />;
-    const editBodyTemplate = (rowData: IAccount) => <Button icon="pi pi-credit-card" outlined onClick={() => router.push(`/flow/action/${category}/${rowData.id}`)} />;
+    const editBodyTemplate = (rowData: IAccount) => <Button icon="pi pi-credit-card" outlined onClick={() => router.push(`/account/${rowData.id}`)} />;
 
     const allowedCategories = useMemo(() => ['saving', 'loan'], []);
     const infoCategories = useMemo<{ [key: string]: string }>(() => ({ saving: 'Simpanan', loan: 'Pinjaman' }), []);
@@ -67,7 +67,7 @@ const TableCustomerTransaction = ({ params }: { params: Promise<{ slug: string }
     useEffect(() => {
         const categorize = async () => {
             const { slug } = await params;
-            setCategory(allowedCategories.includes(slug) ? slug : allowedCategories[0]);
+            setCategory(allowedCategories.includes(slug[0]) ? slug[0] : allowedCategories[0]);
         };
 
         categorize();
@@ -105,4 +105,4 @@ const TableCustomerTransaction = ({ params }: { params: Promise<{ slug: string }
     );
 };
 
-export default TableCustomerTransaction;
+export default TableTransactionRecord;

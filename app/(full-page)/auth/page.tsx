@@ -15,6 +15,8 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
     const [isLoad, setLoad] = useState(false);
+    const [showInstallLink, setShowInstallLink] = useState(false);
+    const [prompt, setPrompt] = useState<any>(null);
     const { layoutConfig } = useContext(LayoutContext);
 
     const router = useRouter();
@@ -73,6 +75,23 @@ const LoginPage = () => {
         }
     }, [router]);
 
+    useEffect(() => {
+        const handleBeforeInstallPrompt = (e: any) => {
+            e.preventDefault();
+            setPrompt(e);
+
+            if (!window.matchMedia('(display-mode: standalone)').matches) {
+                setShowInstallLink(true);
+            }
+        };
+
+        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+        return () => {
+            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        };
+    }, []);
+
     return (
         <div className={containerClassName}>
             <div className="flex flex-column align-items-center justify-content-center">
@@ -103,6 +122,25 @@ const LoginPage = () => {
                                 Sandi
                             </label>
                             <Password inputId="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Kata Sandi" toggleMask className="w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Password>
+
+                            {showInstallLink && (
+                                <div className="flex align-items-center justify-content-between mb-5 gap-5">
+                                    <a
+                                        className="font-medium no-underline ml-2 text-right cursor-pointer"
+                                        style={{ color: 'var(--primary-color)' }}
+                                        onClick={() => {
+                                            if (prompt) {
+                                                prompt.prompt();
+                                                prompt.useChoice.then((_: any) => {
+                                                    setPrompt(null);
+                                                });
+                                            }
+                                        }}
+                                    >
+                                        Install Web App
+                                    </a>
+                                </div>
+                            )}
 
                             <div className="flex align-items-center justify-content-between mb-5 gap-5"></div>
                             {!isLoad && (
