@@ -20,7 +20,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <meta name="description" content="Baitul Mal Cicurug Bata Tasikmalaya" />
                 <meta name="format-detection" content="telephone=no" />
                 <meta name="mobile-web-app-capable" content="yes" />
-                <meta name="msapplication-TileColor" content="#22C55E" />
+                <meta name="msapplication-TileColor" content="#111827" />
                 <meta name="msapplication-tap-highlight" content="no" />
                 <meta name="theme-color" content="#6366F1" />
 
