@@ -88,7 +88,7 @@ const LoginPage = () => {
                         <Toast ref={toast} />
 
                         <div className="text-center mb-5">
-                            <img src="/images/layout/bcbs.jpg" alt="Image" height="170" className="mb-3 border-round-2xl" />
+                            <img src="/images/layout/bcbs.png" alt="Image" height="170" className="mb-3 border-round-2xl" />
                             <div className="text-900 text-3xl font-medium mb-3">Dashboard BCBS</div>
                             <span className="text-600 font-medium">Baitul Mal | Cicurug Bata</span>
                         </div>

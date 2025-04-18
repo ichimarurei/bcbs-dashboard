@@ -24,28 +24,28 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <meta name="msapplication-tap-highlight" content="no" />
                 <meta name="theme-color" content="#6366F1" />
 
-                <link rel="apple-touch-icon" href="/images/layout/icon-192x192.jpg" />
-                <link rel="apple-touch-icon" sizes="192x192" href="/images/layout/icon-192x192.jpg" />
-                <link rel="apple-touch-icon" sizes="512x512" href="/images/layout/icon-512x512.jpg" />
+                <link rel="apple-touch-icon" href="/images/layout/icon-192x192.png" />
+                <link rel="apple-touch-icon" sizes="192x192" href="/images/layout/icon-192x192.png" />
+                <link rel="apple-touch-icon" sizes="512x512" href="/images/layout/icon-512x512.png" />
                 <meta name="apple-mobile-web-app-capable" content="yes" />
                 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
                 <meta name="apple-mobile-web-app-title" content="Baitul Mal Cicurug Bata" />
 
-                <link rel="icon" type="image/jpg" sizes="192x192" href="/images/layout/icon-192x192.jpg" />
-                <link rel="icon" type="image/jpg" sizes="512x512" href="/images/layout/icon-512x512.jpg" />
+                <link rel="icon" type="image/png" sizes="192x192" href="/images/layout/icon-192x192.png" />
+                <link rel="icon" type="image/png" sizes="512x512" href="/images/layout/icon-512x512.png" />
 
                 <meta name="twitter:card" content="BCBS" />
                 <meta name="twitter:url" content="https://bcbs-dashboard-v2.vercel.app" />
                 <meta name="twitter:title" content="Baitul Mal Cicurug Bata" />
                 <meta name="twitter:description" content="Baitul Mal Cicurug Bata Tasikmalaya" />
-                <meta name="twitter:image" content="https://bcbs-dashboard-v2.vercel.app/images/layout/icon-512x512.jpg" />
+                <meta name="twitter:image" content="https://bcbs-dashboard-v2.vercel.app/images/layout/icon-512x512.png" />
                 <meta name="twitter:creator" content="jms21maru@gmail.com" />
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="Baitul Mal Cicurug Bata" />
                 <meta property="og:description" content="Baitul Mal Cicurug Bata Tasikmalaya" />
                 <meta property="og:site_name" content="BCBS" />
                 <meta property="og:url" content="https://bcbs-dashboard-v2.vercel.app" />
-                <meta property="og:image" content="https://bcbs-dashboard-v2.vercel.app/images/layout/icon-512x512.jpg" />
+                <meta property="og:image" content="https://bcbs-dashboard-v2.vercel.app/images/layout/icon-512x512.png" />
 
                 <meta name="viewport" content="initial-scale=1, viewport-fit=cover, width=device-width"></meta>
                 <link rel="stylesheet" id="theme-css" href={`/themes/lara-dark-purple/theme.css`}></link>

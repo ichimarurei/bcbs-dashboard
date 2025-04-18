@@ -10,7 +10,7 @@ const ErrorPage = () => {
     return (
         <div className="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
             <div className="flex flex-column align-items-center justify-content-center">
-                <img src="/images/layout/bcbs.jpg" alt="BCBS logo" className="mb-5 w-6rem flex-shrink-0 border-round-2xl" />
+                <img src="/images/layout/bcbs.png" alt="BCBS logo" className="mb-5 w-6rem flex-shrink-0 border-round-2xl" />
                 <div
                     style={{
                         borderRadius: '56px',
