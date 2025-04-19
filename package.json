@@ -7,7 +7,7 @@
         "email": "jms21maru@gmail.com"
     },
     "scripts": {
-        "dev": "yarn && yarn format && next dev",
+        "dev": "yarn && yarn format && yarn lint && next dev",
         "build": "next build",
         "start": "next start",
         "format": "prettier --check --write \"{app,demo,layout,types}/**/*.{js,ts,tsx,d.ts}\"",

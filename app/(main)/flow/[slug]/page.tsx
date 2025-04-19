@@ -19,7 +19,7 @@ const TableCustomerTransaction = ({ params }: { params: Promise<{ slug: string }
 
     const router = useRouter();
     const statusBodyTemplate = (rowData: IAccount) => <Tag value={rowData.status ? 'AKTIF' : 'TIDAK AKTIF'} severity={rowData.status ? 'success' : 'warning'} />;
-    const editBodyTemplate = (rowData: IAccount) => <Button icon="pi pi-credit-card" outlined onClick={() => router.push(`/flow/action/${category}/${rowData.id}`)} />;
+    const editBodyTemplate = (rowData: IAccount) => <Button icon="pi pi-credit-card" outlined onClick={() => router.push(`/flow/${category}/${rowData.id}`)} />;
 
     const allowedCategories = useMemo(() => ['saving', 'loan'], []);
     const infoCategories = useMemo<{ [key: string]: string }>(() => ({ saving: 'Simpanan', loan: 'Pinjaman' }), []);
